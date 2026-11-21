@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.secret_key = "student_marks_secret"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_FILE = os.path.join(BASE_DIR, "..", "students.json")
+DATA_FILE = os.path.join(BASE_DIR, "students.json")
 
 SUBJECTS = ("Python", "Mathematics", "Physics", "English", "Computer")
 
