@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks Management</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 25px 6%;
+        }
+
+        header h1 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #dbeafe;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px #0000000d;
+        }
+
+        .card h3 {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .card h2 {
+            color: #1d4ed8;
+            font-size: 30px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            background: #2563eb;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        .green {
+            background: #15803d;
+        }
+
+        .purple {
+            background: #7c3aed;
+        }
+
+        .table-box {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            overflow-x: auto;
+            box-shadow: 0 4px 15px #0000000d;
+        }
+
+        .table-box h2 {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        .grade {
+            font-weight: bold;
+            color: #15803d;
+        }
+
+        .message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+        }
+
+        .edit {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .delete {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎓 Student Marks Management System</h1>
+    <p>Manage student records and monitor academic performance</p>
+</header>
+
+<div class="container">
+
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <div class="stats">
+
+        <div class="card">
+            <h3>Total Students</h3>
+            <h2>{{ total_students }}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Class Average</h3>
+            <h2>{{ "%.2f"|format(average) }}%</h2>
+        </div>
+
+        <div class="card">
+            <h3>Class Topper</h3>
+            <h2 style="font-size: 22px;">
+                {{ topper.name if topper else "N/A" }}
+            </h2>
+        </div>
+
+    </div>
+
+    <div class="actions">
+    <a href="{{ url_for('add_student') }}" class="btn green">+ Add Student</a>
+    <a href="{{ url_for('report') }}" class="btn purple">View Class Report</a>
+</div>
+
+<div class="card" style="margin-bottom: 25px;">
+    <h3>🔍 Search Student by Roll Number</h3>
+
+    <form action="{{ url_for('search_student') }}" method="GET"
+          style="display: flex; flex-wrap: wrap; gap: 10px;">
+
+        <input
+            type="text"
+            name="roll_no"
+            placeholder="Enter student roll number"
+            required
+            style="flex: 1; min-width: 200px; padding: 13px;
+                   border: 1px solid #cbd5e1; border-radius: 8px;">
+
+        <button type="submit" class="btn"
+                style="border: none; cursor: pointer;">
+            Search Student
+        </button>
+
+    </form>
+</div>
+
+    <div class="table-box">
+
+        <h2>Student Records</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Student Name</th>
+                    <th>Total Marks</th>
+                    <th>Percentage</th>
+                    <th>Grade</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.roll_no }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>{{ "%.2f"|format(student.total) }}/500</td>
+                    <td>{{ "%.2f"|format(student.percentage) }}%</td>
+                    <td class="grade">{{ student.grade }}</td>
+                    <td>
+                        <a class="edit"
+                           href="{{ url_for('edit_student', roll_no=student.roll_no) }}">
+                           Edit
+                        </a>
+
+                        <form method="POST"
+                              action="{{ url_for('delete_student', roll_no=student.roll_no) }}"
+                              style="display:inline;"
+                              onsubmit="return confirm('Delete this student?');">
+                            <button class="delete" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6">No student records found. Add your first student!</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<footer>
+    Student Marks Management System | Academic Performance Dashboard
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+[
+    {
+        "roll_no": "1",
+        "name": "Rohan",
+        "marks": {
+            "Python": 78.0,
+            "Mathematics": 34.0,
+            "Physics": 89.0,
+            "English": 90.0,
+            "Computer": 73.0
+        }
+    },
+    {
+        "roll_no": "2",
+        "name": "shurbi",
+        "marks": {
+            "Python": 90.0,
+            "Mathematics": 3.0,
+            "Physics": 23.0,
+            "English": 78.0,
+            "Computer": 78.0
+        }
+    },
+    {
+        "roll_no": "3",
+        "name": "Simiyah",
+        "marks": {
+            "Python": 98.54,
+            "Mathematics": 78.07,
+            "Physics": 89.0,
+            "English": 88.47,
+            "Computer": 49.88
+        }
+    }
+]

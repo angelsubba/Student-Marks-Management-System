@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Form</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            padding: 30px 15px;
+        }
+
+        .form-container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px #00000012;
+        }
+
+        h1 {
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 17px;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: 2px solid #93c5fd;
+            border-color: #2563eb;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 13px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .flash {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 7px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="form-container">
+
+    <h1>{{ "Edit Student" if student else "Add New Student" }}</h1>
+
+    <p class="subtitle">Enter student details and subject-wise marks</p>
+
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <label>Roll Number</label>
+        <input
+            type="text"
+            name="roll_no"
+            value="{{ student.roll_no if student else '' }}"
+            {% if student %}readonly{% endif %}
+            required
+        >
+
+        <label>Student Name</label>
+        <input
+            type="text"
+            name="name"
+            value="{{ student.name if student else '' }}"
+            placeholder="Enter student name"
+            required
+        >
+
+        <h3 style="color:#1e3a8a; margin-top:25px;">
+            Subject Marks (0–100)
+        </h3>
+
+        {% for subject in subjects %}
+            <label>{{ subject }}</label>
+            <input
+                type="number"
+                name="{{ subject }}"
+                min="0"
+                max="100"
+                step="0.01"
+                value="{{ student.marks.get(subject, 0) if student else '' }}"
+                placeholder="Enter {{ subject }} marks"
+                required
+            >
+        {% endfor %}
+
+        <button type="submit">
+            {{ "Update Student" if student else "Save Student" }}
+        </button>
+
+    </form>
+
+    <a href="{{ url_for('dashboard') }}" class="back">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

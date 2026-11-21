@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Search Student Result</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 25px 15px;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .header {
+            background: #1e3a8a;
+            color: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px #0000000d;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .info div {
+            background: #eff6ff;
+            padding: 15px;
+            border-radius: 9px;
+        }
+
+        .info strong {
+            display: block;
+            color: #64748b;
+            margin-bottom: 7px;
+        }
+
+        .percentage {
+            color: #2563eb;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 500px) {
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            th, td {
+                padding: 9px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <h1>🔍 Student Search Result</h1>
+            <p>Student information and academic performance</p>
+        </div>
+
+        <div class="card">
+            <h2>Student Information</h2>
+
+            <div class="info">
+                <div>
+                    <strong>Student Name</strong>
+                    {{ student.name }}
+                </div>
+
+                <div>
+                    <strong>Roll Number</strong>
+                    {{ student.roll_no }}
+                </div>
+
+                <div>
+                    <strong>Total Marks</strong>
+                    {{ "%.2f"|format(total) }} / 500
+                </div>
+
+                <div>
+                    <strong>Percentage</strong>
+                    <span class="percentage">
+                        {{ "%.2f"|format(percentage) }}%
+                    </span>
+                </div>
+
+                <div>
+                    <strong>Grade</strong>
+                    {{ grade }}
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Subject-wise Marks</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Marks</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for subject in subjects %}
+                    <tr>
+                        <td>{{ subject }}</td>
+                        <td>{{ student.marks.get(subject, 0) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="btn">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+</body>
+</html>
