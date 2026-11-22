@@ -76,6 +76,8 @@ How to Run the Project
    
    "http://127.0.0.1:5000"
 
+7. Open the deployed website using the Live Website link provided below.
+
 Conclusion
 
 This project provides a simple and user-friendly way to manage student marks and academic records. It reduces manual work and makes student performance analysis easier.
