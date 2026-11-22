@@ -79,3 +79,11 @@ How to Run the Project
 Conclusion
 
 This project provides a simple and user-friendly way to manage student marks and academic records. It reduces manual work and makes student performance analysis easier.
+
+Live Website
+
+You can access the Student Marks Management System online using the link below:
+
+Live Website: https://student-marks-management-system-dqpj.onrender.com
+
+GitHub Repository: https://github.com/angelsubba/Student-Marks-Management-System
